@@ -4,13 +4,16 @@
 // 3) the player picks the orsder of the dice they want eg. if they want 63, they will specify that the 2nd dice goes first
 // 4) after both players have rolled and chosen dice order, the player with the higher combined number wins
 
-// ===== breakdown and planning ===== //
+// ===== BREAKDOWN AND PLANNING ===== //
 // v1. Rolls 2 dice and turns the output for 1 player. That player chooses the dice order and gets the correct return output.
+
 // v2. Refactored code to include player 2
 //      - global variables for currentPlayer; allPlayersScore
 //      - refactor myOutputValue to interact with each player
 //      - write logic for player 1 to go first then player 2, and finally point towards comparing score
+
 // v3. Implement comparing dice scores and declare winner
+
 // v4. Reset the game without refreshing the browser page.
 
 var gameStateDiceRoll = 'game state dice roll';
@@ -40,7 +43,7 @@ var rollDiceForPlayer = function () {
   }
 
   console.log('rollDiceForPlayer changes, playerRolls: ' + currentPlayerRoles)
-  return 'Welcome, Player ' + currentPlayer + '<br>Dice 1: ' + currentPlayerRoles[0] + '<br>Dice 2: ' + currentPlayerRoles[1] + '<br> Please input 1 or 2 to choose the corresponding dice to be used as the first digit of your final value.'
+  return 'Welcome, Player ' + currentPlayer + '<br><br>Dice 1: ' + currentPlayerRoles[0] + '<br>Dice 2: ' + currentPlayerRoles[1] + '<br><br>Please input 1 or 2 to choose the corresponding dice to be used as the first digit of your final value.'
 }
 
 var getPlayerScore = function (playerInput) {
@@ -49,7 +52,7 @@ var getPlayerScore = function (playerInput) {
   // input validation
   if (playerInput != 1 && playerInput != 2) {
     console.log('control flow: input validation, invalid input... NOT 1 AND NOT 2')
-    myOutputValue = 'Error. Please input only 1 or 2 based on your desired value from your rolls <br>Dice 1: ' + currentPlayerRoles[0] + '<br>Dice 2: ' + currentPlayerRoles[1];
+    myOutputValue = 'Error. Please input only 1 or 2 based on your desired value from your rolls <br><br>Dice 1: ' + currentPlayerRoles[0] + '<br>Dice 2: ' + currentPlayerRoles[1];
   }
 
   // playerInput = 1
@@ -71,6 +74,29 @@ var getPlayerScore = function (playerInput) {
   // clear current player rolls array
   currentPlayerRoles = [];
   return myOutputValue
+}
+
+var comparePlayersScores = function () {
+  console.log('control flow: gameState == gameStateCompareScores');
+
+  compareMessage = "Player 1 score: " + allPlayersScore[0] + '<br>Player 2 score: ' + allPlayersScore[1];
+
+  // player 1 wins
+  if (allPlayersScore[0] > allPlayersScore[1]) {
+    compareMessage = compareMessage + "<br><br>Player 1 wins!"
+  }
+
+  // player 2 wins
+  if (allPlayersScore[0] < allPlayersScore[1]) {
+    compareMessage = compareMessage + "<br><br>Player 2 wins!"
+  }
+
+  // tie
+  if (allPlayersScore[0] == allPlayersScore[1]) {
+    compareMessage = compareMessage + "<br><br>It's a tie!"
+  }
+
+  return compareMessage;
 }
 
 var main = function (input) {
@@ -106,5 +132,11 @@ var main = function (input) {
       gameState = gameStateCompareScores;
       return myOutputValue + "<br><br>Press submit to calculate scores!";
     }
+  }
+
+  if (gameState = gameStateCompareScores) {
+    console.log('control flow: gameState == gameStateCompareScores')
+    myOutputValue = comparePlayersScores();
+    return myOutputValue;
   }
 };
