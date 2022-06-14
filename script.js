@@ -16,15 +16,22 @@
 
 // v4. Reset the game without refreshing the browser page.
 
+// ===== MORE COMFORTABLE ===== //
+// v5. Keeping score for each player
+//      - also output a leaderboard in decreasing order
+
 var gameStateDiceRoll = 'game state dice roll';
 var gameStateChooseDiceOrder = 'game state choose dice order';
-var gameStateCompareScores = 'game state compare scores'
+var gameStateCompareScores = 'game state compare scores';
+var gameStateShowLeaderboard = 'game state show leaderboard';
 var gameState = gameStateDiceRoll;
 
 var currentPlayerRoles = [];
 
 var currentPlayer = 1;
 var allPlayersScore = [];
+
+var leaderboard =[0,0];
 
 // helper function: dice roll
 var rollDice = function () {
@@ -105,6 +112,33 @@ var resetGame = function () {
   allPlayersScore = [];
 }
 
+var keepingScore = function () {
+  console.log('control flow: gameState == gameStateShowLeaderboard');
+
+  if (allPlayersScore[0] > allPlayersScore[1]) {
+    leaderboard[0] += 1;
+  }
+
+  if (allPlayersScore[0] < allPlayersScore[1]) {
+    leaderboard[1] += 1;
+  } 
+
+  if (allPlayersScore[0] == allPlayersScore[1]) {
+    leaderboard[0] = leaderboard[0];
+    leaderboard[1] = leaderboard[1];
+  }
+
+  if (leaderboard[0] > leaderboard[1]) {
+    outputBoard = '<br><br>CURRENT LEADERBOARD <br>Player 1 Score: ' + leaderboard[0] + '<br>Player 2 Score: ' + leaderboard[1];
+  }
+
+  if (leaderboard[0] < leaderboard[1]) {
+    outputBoard = '<br><br>CURRENT LEADERBOARD <br>Player 2 Score: ' + leaderboard[1] + '<br>Player 1 Score: ' + leaderboard[0];
+  }
+
+  return outputBoard
+}
+
 var main = function (input) {
   console.log('checking game state on submit click: ' + gameState);
   console.log('checking currentPlayer on submit click: ' + currentPlayer);
@@ -142,7 +176,7 @@ var main = function (input) {
 
   if (gameState = gameStateCompareScores) {
     console.log('control flow: gameState == gameStateCompareScores')
-    myOutputValue = comparePlayersScores();
+    myOutputValue = comparePlayersScores() + keepingScore();
 
     resetGame();
     console.log('game is reset')
